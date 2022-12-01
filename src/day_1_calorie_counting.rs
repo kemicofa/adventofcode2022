@@ -10,36 +10,34 @@ pub fn calorie_counting(elves: Vec<Vec<i32>>) -> i32 {
 mod tests {
     use std::fs;
     use super::*;
-    #[test]
-    fn it_can_find_most_calories_for_example_puzzle_input() {
-        let contents = fs::read_to_string("./data/day_1_calorie_counting_example_puzzle_input.txt")
-            .expect("Should have been able to read the file");
 
-        let elves: Vec<Vec<i32>> = contents
+    fn input_to_vector_2d_i32(input: String) -> Vec<Vec<i32>> {
+        input
             .split("\n\n")
-            .map(|calories| calories
+            .map(|row| row
                 .split('\n')
-                .map(|calorie_string| calorie_string.parse::<i32>().unwrap())
+                .map(|item| item.parse::<i32>().unwrap())
                 .collect()
             )
-            .collect();
+            .collect()
+    }
+
+    #[test]
+    fn it_can_find_most_calories_for_example_puzzle_input() {
+        let input = fs::read_to_string("./data/day_1_calorie_counting_example_puzzle_input.txt")
+            .expect("Should have been able to read the file");
+
+        let elves = input_to_vector_2d_i32(input);
 
         assert_eq!(calorie_counting(elves), 24000);
     }
 
     #[test]
     fn it_can_find_most_calories_for_puzzle_input() {
-        let contents = fs::read_to_string("./data/day_1_calorie_counting_puzzle_input.txt")
+        let input = fs::read_to_string("./data/day_1_calorie_counting_puzzle_input.txt")
             .expect("Should have been able to read the file");
 
-        let elves: Vec<Vec<i32>> = contents
-            .split("\n\n")
-            .map(|calories| calories
-                .split('\n')
-                .map(|calorie_string| calorie_string.parse::<i32>().unwrap())
-                .collect()
-            )
-            .collect();
+        let elves = input_to_vector_2d_i32(input);
 
         assert_eq!(calorie_counting(elves), 71124);
     }
