@@ -1,15 +1,9 @@
 pub fn calorie_counting(elves: Vec<Vec<i32>>) -> i32 {
-    let mut most_calories = 0;
-    for elf in elves {
-        let mut elf_calories = 0;
-        for calorie in elf {
-            elf_calories += calorie;
-        }
-        if elf_calories > most_calories {
-            most_calories = elf_calories;
-        }
-    }
-    most_calories
+    elves
+        .iter()
+        .map(|elf| elf.iter().fold(0, |acc, calorie| acc + calorie ))
+        .max()
+        .unwrap()
 }
 
 #[cfg(test)]
