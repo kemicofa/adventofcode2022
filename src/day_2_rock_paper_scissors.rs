@@ -49,7 +49,7 @@ mod tests {
     }
 
     #[test]
-    fn it_can_find_most_calories_for_example_puzzle_input() {
+    fn it_can_use_the_strategy_guide_to_calculate_rps_score_for_example_puzzle_input() {
         let input = get_input_from_file("./data/day_2_rock_paper_scissors_example_puzzle_input.txt");
         let strategy_guide = input_to_vector_2d_char(input);
 
@@ -57,7 +57,7 @@ mod tests {
     }
 
     #[test]
-    fn it_can_find_most_calories_for_puzzle_input() {
+    fn it_can_use_the_strategy_guide_to_calculate_rps_score_for_puzzle_input() {
         let input = get_input_from_file("./data/day_2_rock_paper_scissors_puzzle_input.txt");
         let strategy_guide = input_to_vector_2d_char(input);
 
