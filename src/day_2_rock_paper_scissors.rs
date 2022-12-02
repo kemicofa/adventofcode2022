@@ -1,7 +1,8 @@
 const DRAW: i32 = 3;
 const WIN: i32 = 6;
+const LOSS: i32 = 0;
 
-pub fn rps_action_to_integer(action: char) -> i32 {
+fn rps_action_to_value(action: char) -> i32 {
     match action {
         'A' | 'X' => 1, // rock
         'B' | 'Y' => 2, // paper
@@ -10,20 +11,19 @@ pub fn rps_action_to_integer(action: char) -> i32 {
     }
 }
 
-pub fn calculate_round_score(round: Vec<i32>) -> i32 {
-    let diff = round[1] - round[0];
-    match diff {
-        0 => round[1] + DRAW,
-        1 | -2 => round[1] + WIN,
-        _ => round[1]
+fn calculate_round_score(round_value_1: i32, round_value_2: i32) -> i32 {
+    let diff = round_value_2 - round_value_1;
+    round_value_2 + match diff {
+        0 => DRAW,
+        1 | -2 => WIN,
+        _ => LOSS
     }
 }
 
 pub fn solve_rock_paper_scissors(strategy_guide: Vec<Vec<char>>) -> i32 {
     strategy_guide
         .into_iter()
-        .map(|round| vec![rps_action_to_integer(round[0]), rps_action_to_integer(round[1])])
-        .map(|round| calculate_round_score(round))
+        .map(|round| calculate_round_score(rps_action_to_value(round[0]), rps_action_to_value(round[1])))
         .fold(0, |acc, round_score| acc + round_score)
 }
 
