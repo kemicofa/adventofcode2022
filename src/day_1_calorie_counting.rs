@@ -1,7 +1,7 @@
 pub fn calorie_counting(elves: Vec<Vec<i32>>) -> i32 {
     elves
         .iter()
-        .map(|elf| elf.iter().fold(0, |acc, calorie| acc + calorie ))
+        .map(|elf| elf.iter().sum())
         .max()
         .unwrap()
 }
