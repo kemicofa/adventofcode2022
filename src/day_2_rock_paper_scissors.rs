@@ -24,7 +24,7 @@ pub fn solve_rock_paper_scissors(strategy_guide: Vec<Vec<char>>) -> i32 {
     strategy_guide
         .into_iter()
         .map(|round| calculate_round_score(rps_action_to_value(round[0]), rps_action_to_value(round[1])))
-        .fold(0, |acc, round_score| acc + round_score)
+        .sum()
 }
 
 #[cfg(test)]
