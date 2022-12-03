@@ -1,14 +1,32 @@
-use std::{collections::HashSet};
+use std::{collections::HashSet, str::Chars};
 
-pub fn reogarnise_rucksack(rucksacks: Vec<(String, String)>) -> u32 {
+const UPPERCASE_ASCII_OFFSET: u32 = 38;
+const LOWERCASE_ASCII_OFFSET: u32 = 96;
+
+fn item_types_to_sum_of_priorities(item_types: Vec<char>) -> u32 {
+    item_types
+        .into_iter()
+        .map(|item_type| {
+            item_type as u32 - match item_type.is_uppercase() {
+                true => UPPERCASE_ASCII_OFFSET,
+                false => LOWERCASE_ASCII_OFFSET
+            }
+        })
+        .sum()
+}
+
+fn create_set_from_chars(chars: Chars<'_>) -> HashSet<char> {
+    let mut set:HashSet<char> = HashSet::new();
+    chars.for_each(|item_type| {
+        set.insert(item_type);
+    });
+    set
+}
+
+pub fn reorganise_rucksack(rucksacks: Vec<(String, String)>) -> u32 {
     let mut duplicate_item_types: Vec<char> = Vec::new();
     for (compartment1, compartment2) in rucksacks {
-        let mut rucksack_set:HashSet<char> = HashSet::new();
-
-        compartment1.chars().for_each(|item_type| {
-            rucksack_set.insert(item_type);
-        });
-
+        let rucksack_set = create_set_from_chars(compartment1.chars());
         for item_type in compartment2.chars() {
             if rucksack_set.contains(&item_type) {
                 duplicate_item_types.push(item_type);
@@ -16,15 +34,7 @@ pub fn reogarnise_rucksack(rucksacks: Vec<(String, String)>) -> u32 {
             }
         }
     }
-    duplicate_item_types
-        .into_iter()
-        .map(|item_type| {
-            item_type as u32 - match item_type.is_uppercase() {
-                true => 38,
-                false => 96
-            }
-        })
-        .sum()
+    item_types_to_sum_of_priorities(duplicate_item_types)
 }
 
 #[cfg(test)]
@@ -49,7 +59,7 @@ mod tests {
     fn it_can_use_the_reorganise_rucksack_to_calculate_rps_score_for_example_puzzle_input() {
         let input = get_input_from_file("./data/day_3_example_puzzle_input.txt");
         let reorganise_rucksacks = input_to_vector_tuple_str(input);
-        assert_eq!(reogarnise_rucksack(reorganise_rucksacks), 157);
+        assert_eq!(reorganise_rucksack(reorganise_rucksacks), 157);
     }
 
     #[test]
@@ -57,6 +67,6 @@ mod tests {
         let input = get_input_from_file("./data/day_3_puzzle_input.txt");
         let reorganise_rucksacks = input_to_vector_tuple_str(input);
 
-        assert_eq!(reogarnise_rucksack(reorganise_rucksacks), 7980);
+        assert_eq!(reorganise_rucksack(reorganise_rucksacks), 7980);
     }
 }
